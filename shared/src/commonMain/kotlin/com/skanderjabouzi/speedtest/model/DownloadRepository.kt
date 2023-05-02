@@ -1,5 +1,6 @@
-package com.skanderjabouzi.speedtest
+package com.skanderjabouzi.speedtest.model
 
+import com.skanderjabouzi.speedtest.model.entity.Speed
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -11,8 +12,8 @@ import io.ktor.utils.io.core.readBytes
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.datetime.Clock
 
-class Download {
-    suspend operator fun invoke() = channelFlow {
+class DownloadRepository {
+    operator fun invoke() = channelFlow {
         val DEFAULT_BUFFER_SIZE: Int = 8 * 1024
         val client = HttpClient(CIO)
         //val file = File.createTempFile("files", "index", File("/tmp"))

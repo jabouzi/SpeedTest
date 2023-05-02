@@ -4,13 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.*
+import androidx.compose.material.Surface
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    GreetingView(Greeting().greet(), this)
+                    GreetingView(Greeting().greet())
                 }
             }
         }
@@ -38,17 +41,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingView(
     text: String,
-    context: Context?,
     viewModel: MainViewModel = viewModel()
 ) {
     val uploadSpeed by viewModel.uploadSpeed.collectAsStateWithLifecycle()
     val downloadSpeed by viewModel.downloadSpeed.collectAsStateWithLifecycle()
-    val fileSize = FileHelper.readAsset(context!!, "10MB.dat")
-    Column() {
-        Text(text = "$text ==> ${fileSize?.size}")
+
+    Column(
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = "$text")
         Text(text = uploadSpeed.speed.toString())
         Button(
-            onClick = { viewModel.startUploadTest("10MB.dat", fileSize!!) },
+            onClick = { viewModel.startUploadTest() },
             modifier = Modifier
                 .width(100.dp)
                 .height(100.dp)
@@ -73,6 +77,6 @@ fun GreetingView(
 @Composable
 fun DefaultPreview() {
     MyApplicationTheme {
-        GreetingView("Hello, Android!", null)
+        GreetingView("Hello, Android!")
     }
 }

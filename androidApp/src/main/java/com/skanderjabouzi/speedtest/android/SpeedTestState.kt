@@ -1,6 +1,6 @@
 package com.skanderjabouzi.speedtest.android
 
-import com.skanderjabouzi.speedtest.Speed
+import com.skanderjabouzi.speedtest.model.entity.Speed
 
 data class UploadSpeedState(
     val loading: Boolean = true,

@@ -1,4 +1,4 @@
-package com.skanderjabouzi.speedtest
+package com.skanderjabouzi.speedtest.model.entity
 
 data class Speed(
     val currentSpeed: Double,

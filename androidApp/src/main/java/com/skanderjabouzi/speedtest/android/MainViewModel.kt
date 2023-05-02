@@ -2,14 +2,19 @@ package com.skanderjabouzi.speedtest.android
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skanderjabouzi.speedtest.Download
-import com.skanderjabouzi.speedtest.Speed
-import com.skanderjabouzi.speedtest.Upload
+import com.skanderjabouzi.speedtest.model.DownloadRepository
+import com.skanderjabouzi.speedtest.model.entity.Speed
+import com.skanderjabouzi.speedtest.model.UploadRepository
+import com.skanderjabouzi.speedtest.ui.SharedSpeedTestViewModel
+import com.skanderjabouzi.speedtest.ui.SpeedTestViewModel
+import com.skanderjabouzi.speedtest.util.CommonFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel: ViewModel() {
+class MainViewModel: SpeedTestViewModel, ViewModel() {
+
+    private val vm = SharedSpeedTestViewModel()
 
     private val _uploadSpeed = MutableStateFlow<UploadSpeedState>(UploadSpeedState())
     val uploadSpeed: StateFlow<UploadSpeedState> = _uploadSpeed
@@ -17,12 +22,12 @@ class MainViewModel: ViewModel() {
     private val _downloadSpeed = MutableStateFlow<DownloadSpeedState>(DownloadSpeedState())
     val downloadSpeed: StateFlow<DownloadSpeedState> = _downloadSpeed
 
-    val upload = Upload()
-    val download = Download()
+    val upload = UploadRepository()
+    val download = DownloadRepository()
 
-    fun startUploadTest(fileName: String, bytes: ByteArray) {
+    fun startUploadTest() {
         viewModelScope.launch {
-            upload(fileName, bytes).collect {
+            upload().collect {
                 handleUploadSuccess(it)
             }
         }
@@ -51,4 +56,7 @@ class MainViewModel: ViewModel() {
     private fun handleDownloadFailure() {
         _downloadSpeed.value = DownloadSpeedState(loading = false, error = true)
     }
+
+    override fun observeUpload(): CommonFlow<Speed> = vm.observeUpload()
+    override fun observeDownload(): CommonFlow<Speed> = vm.observeDownload()
 }

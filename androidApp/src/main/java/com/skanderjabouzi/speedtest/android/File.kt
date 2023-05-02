@@ -9,10 +9,6 @@ import java.io.OutputStream
 
 
 object FileHelper {
-//    fun getFile(): ByteArray {
-//        var fileName = "10MB.dat.${System.currentTimeMillis()}"
-//        return File(fileName).readBytes()
-//    }
 
     @Throws(IOException::class)
     fun readAsset(context: Context, filename: String?): ByteArray? {
